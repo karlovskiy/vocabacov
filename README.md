@@ -22,7 +22,7 @@ docker run -d \
 -e VOCABACOV_TOKEN=YOUR_TELEGRAM_BOT_TOKEN \
 -e VOCABACOV_CHANNELS=36484 \
 -v $(pwd)/vocabacov.db:/db/vocabacov.db \
-vocabacov:latest
+ghcr.io/karlovskiy/vocabacov:latest
 ```
 
 ## Telegram bot
