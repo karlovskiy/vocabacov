@@ -1,6 +1,6 @@
 # Vocabacov
 
-Telegram bot to enlarge you vocabulary.
+Telegram bot to enlarge your vocabulary.
 
 ## Environment variables
 | Name               | Mandatory | Default value | Description                                   |
