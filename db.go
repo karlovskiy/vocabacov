@@ -31,25 +31,28 @@ func NewDb() (*sql.DB, error) {
 		return nil, fmt.Errorf("db file error: %w", err)
 	}
 	db, err := sql.Open("sqlite3", dbPath)
+	if err != nil {
+		return nil, fmt.Errorf("db open error: %w", err)
+	}
 	if err := db.Ping(); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("db ping error: %w", err)
 	}
 	driver, err := sqlite3.WithInstance(db, &sqlite3.Config{})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("migration db driver error: %w", err)
 	}
 	d, err := iofs.New(migrationsFs, "migrations")
 	if err != nil {
-		log.Fatal(err)
+		return nil, fmt.Errorf("migration source driver error: %w", err)
 	}
 	m, err := migrate.NewWithInstance("iofs", d, "vocabacov", driver)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("migration creation error: %w", err)
 	}
 	if err := m.Up(); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("migration error: %w", err)
 	}
-	return db, err
+	return db, nil
 }
 
 func savePhrase(db *sql.DB, lang, phrase string) error {
