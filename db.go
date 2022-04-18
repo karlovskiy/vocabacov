@@ -49,7 +49,7 @@ func NewDb() (*sql.DB, error) {
 	if err != nil {
 		return nil, fmt.Errorf("migration creation error: %w", err)
 	}
-	if err := m.Up(); err != nil {
+	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
 		return nil, fmt.Errorf("migration error: %w", err)
 	}
 	return db, nil
