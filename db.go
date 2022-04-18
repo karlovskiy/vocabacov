@@ -2,13 +2,20 @@ package vocabacov
 
 import (
 	"database/sql"
+	"embed"
 	"errors"
 	"fmt"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/sqlite3"
+	"github.com/golang-migrate/migrate/v4/source/iofs"
 	_ "github.com/mattn/go-sqlite3"
 	"io/fs"
 	"log"
 	"os"
 )
+
+//go:embed migrations/*.sql
+var migrationsFs embed.FS
 
 func NewDb() (*sql.DB, error) {
 	dbPath := os.Getenv(EnvDatabase)
@@ -27,9 +34,20 @@ func NewDb() (*sql.DB, error) {
 	if err := db.Ping(); err != nil {
 		return nil, err
 	}
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS PHRASES(ID INTEGER PRIMARY KEY, LANG TEXT NOT NULL, PHRASE TEXT NOT NULL)")
+	driver, err := sqlite3.WithInstance(db, &sqlite3.Config{})
 	if err != nil {
-		return db, err
+		return nil, err
+	}
+	d, err := iofs.New(migrationsFs, "migrations")
+	if err != nil {
+		log.Fatal(err)
+	}
+	m, err := migrate.NewWithInstance("iofs", d, "vocabacov", driver)
+	if err != nil {
+		return nil, err
+	}
+	if err := m.Up(); err != nil {
+		return nil, err
 	}
 	return db, err
 }
