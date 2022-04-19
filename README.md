@@ -31,8 +31,8 @@ To create telegram bot follow this [guide](https://core.telegram.org/bots).
 
 ## Commands
 
-`Vocabacov` bot accept commands in format `/lang phrase`, 
-where `lang` ISO-3166 Alpha-2 code and phrase is one or more words.
+`Vocabacov` bot accepts commands in the format `/lang phrase`, 
+where `lang` is ISO-3166 Alpha-2 code and phrase is one or more words.
 
 Examples: `/en hello world`, `/es ola chica`
 
@@ -49,6 +49,6 @@ sqlite> select * from phrases;
 2|en|all your base are belong to us
 ```
 
-## TODO:
+## TODO
 Automatic creation of [anki](https://apps.ankiweb.net/) collections from `sqlite` database 
 with help of awesome [genanki](https://github.com/kerrickstaley/genanki) library.
