@@ -24,13 +24,14 @@ RUN go build \
     -ldflags "-s -w -linkmode=external" \
     -o vocabacov ./cmd/vocabacov
 
-FROM alpine:3.15
+FROM alpine:3.19.1
 
 ENV VOCABACOV_DB_PATH="/db/vocabacov.db"
 
 RUN set -eux && \
 	apk add --no-cache \
         libc6-compat \
+        gcompat \
         sqlite \
         sqlite-libs \
 		ca-certificates \
