@@ -31,12 +31,23 @@ To create telegram bot follow this [guide](https://core.telegram.org/bots).
 
 ## Commands
 
-`Vocabacov` bot accepts commands in the format `/lang phrase`, 
-where `lang` is ISO-3166 Alpha-2 code and phrase is one or more words.
+`Vocabacov` bot accepts commands in the format
+```
+/lang
+phrase
+translation
+``` 
+where `lang` is ISO-3166 Alpha-2 code, `phrase` is one or more words and `translation` is a translation (could be also 
+definition or description).
 
-Examples: `/en hello world`, `/es ola chica`
+Examples:
+```
+/en 
+hello world
+say hi to the world
+```
 
-This bot saves submitted words in the `sqlite3` database.
+This bot saves submitted words in the `sqlite3` database, and you can use `sqlite3` to query `phrases` table.
 ```shell
 $ sqlite3
 SQLite version 3.38.2 2022-03-26 13:51:10
@@ -45,10 +56,4 @@ Connected to a transient in-memory database.
 Use ".open FILENAME" to reopen on a persistent database.
 sqlite> .open vocabacov.db
 sqlite> select * from phrases;
-1|en|hello world
-2|en|all your base are belong to us
 ```
-
-## TODO
-Automatic creation of [anki](https://apps.ankiweb.net/) collections from `sqlite` database 
-with help of awesome [genanki](https://github.com/kerrickstaley/genanki) library.
