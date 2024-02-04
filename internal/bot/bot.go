@@ -1,7 +1,6 @@
 package bot
 
 import (
-	"bytes"
 	"database/sql"
 	"errors"
 	"fmt"
@@ -92,18 +91,11 @@ func (b *Bot) Start(db *sql.DB) {
 					b.sendMessage(&msg)
 					continue
 				}
-				var buf bytes.Buffer
-				buf.WriteString("#separator:tab\n")
-				for _, p := range phrases {
-					buf.WriteString(p.Phrase)
-					buf.WriteByte('\t')
-					buf.WriteString(p.Translation)
-					buf.WriteByte('\n')
-				}
+				ankiData := translate.ExportAnki(phrases)
 				docName := lang + "-" + time.Now().Format("20060102150405") + ".txt"
 				doc := tgbotapi.NewDocument(update.Message.Chat.ID, tgbotapi.FileBytes{
 					Name:  docName,
-					Bytes: buf.Bytes(),
+					Bytes: ankiData,
 				})
 				sent, err := b.api.Send(doc)
 				if err != nil {

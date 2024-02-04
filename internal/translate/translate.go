@@ -1,6 +1,7 @@
 package translate
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"strings"
@@ -59,6 +60,18 @@ func FindPhrase(text string) (*Phrase, error) {
 		}, nil
 	}
 	return nil, nil
+}
+
+func ExportAnki(phrases []Phrase) []byte {
+	var buf bytes.Buffer
+	buf.WriteString("#separator:tab\n")
+	for _, p := range phrases {
+		buf.WriteString(p.Phrase)
+		buf.WriteByte('\t')
+		buf.WriteString(p.Translation)
+		buf.WriteByte('\n')
+	}
+	return buf.Bytes()
 }
 
 // Phrase is the phrase to store in the database
